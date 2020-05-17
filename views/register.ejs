@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>注册</title>
+    <%- include common %>
+    <style>
+        /* label {
+            display: block;
+            margin: 10px;
+        } */
+    </style>
+</head>
+
+<body>
+    <%-  include("header",{title:"register"})  %>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4">
+                <h3 class="text-info">用户注册</h3>
+                <form action="/users/register" method="post">
+                    <div class="form-group">
+                        <label for="usernameInput">用户名</label>
+                        <input name="username" type="text" class="form-control" id="username" placeholder="请输入用户名">
+                    </div>
+                    <div class="form-group">
+                        <label for="passwordInput">密码</label>
+                        <input name="password" type="text" class="form-control" id="password" placeholder="请输入密码">
+                    </div>
+                    <div class="form-group">
+                        <label for="repasswordInput">重复密码</label>
+                        <input name="repassword" type="text" class="form-control" id="repassword" placeholder="请重复输入密码">
+                    </div>
+                    <div class="form-group">
+                        <label for="emailInput">邮箱</label>
+                        <input name="email" type="email" class="form-control" id="email" placeholder="请输入邮箱">
+                    </div>
+                    <button type="button" class="btn btn-primary" onclick="location.href='/login'">登陆</button>
+                    <button type="submit" class="btn btn-success">注册</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <%- include footer %>
+</body>
+
+</html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>电影列表</title>
+    <%- include common %>
+</head>
+
+<body>
+    <%-  include("header",{title:"mvlist"})  %>
+    <div class="container">
+        <div class="row">
+            <div class="form-group col-md-4" style="display:flex;padding-top: 10px;">
+                <input id="keyword" type="text" class="form-control" placeholder="请输入关键字">
+                <button class="btn btn-success" onclick="todoSearch()">点击搜索</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <h3 class="text-info">电影列表</h3>
+                <button class="btn btn-primary" onclick="location.href='/mvlist'">默认排序</button>
+                <button class="btn btn-primary" onclick="location.href='/mvlist?rating.average=-1'">评分降序</button>
+                <button class="btn btn-primary" onclick="location.href='/mvlist?rating.average=1'">评分升序</button>
+                <button class="btn btn-primary" onclick="location.href='/mvlist?year=-1'">年份降序</button>
+                <button class="btn btn-primary" onclick="location.href='/mvlist?year=1'">年份升序</button>
+            </div>
+        </div>
+        <div class="row">
+            <%  result.forEach((value,index)=>{  %>
+            <div class="col-md-3 col-sm-3 col-lg-3">
+                <div class="thumbnail">
+                    <img src="<%- value.images.medium.replace(/img7/,'img3') %>" style="width: 100%;height: 250px;"
+                        alt="">
+                    <div class="caption">
+                        <a href="/details/mvdetails?mid=<%- value.id %>">
+                            <h4 class="text-info pull-right"><%- value.year %></h4>
+                            <h4 class="text-danger"><%- value.title %></h4>
+                            <p class="text-warning">评分:<%- value.rating.average %></p>
+                            <p class="text-scuuess"> 导演: <%- value.directors[0].name %></p>
+                            <p class="text-primary"> 分类: <%- value.genres %></p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <%  })  %>
+        </div>
+    </div>
+
+
+    <%- include footer %>
+</body>
+
+
+<script>
+    function todoSearch() {
+        //搜索框里面搜索的关键字拼接到地址栏
+        location.href = "/mvlist?keyword=" + $("#keyword").val();
+    }
+</script>
+
+</html>

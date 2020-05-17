@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>主页</title>
+    <%- include common %>
+</head>
+
+<body>
+    <div>
+
+        <%-  include("header",{title:"home"})  %>
+        <div>
+            <% if(username){ %>
+            <div class="container">
+                <div class="row">
+                    <h4> 欢迎你: <%- username %></h4>
+                    <button class="btn btn-danger" onclick="location.href='/logout'">注销</button>
+                    <button class="btn btn-info" onclick="location.href='/mvlist'">电影主页</button>
+                    <div class="panel panel-primary" style="margin-top: 20px;">登陆</div>
+                    <div class="panel panel-success">注册</div>
+                    <div class="panel panel-info">电影列表</div>
+                    <div class="panel panel-warning">评论管理</div>
+                    <div class="panel panel-danger">聊天室</div>
+                </div>
+            </div>
+            <% }else{ %>
+            <div class="container">
+                <div class="row">
+                    <p>您还没有登陆，请先登录</p>
+                    <div>
+                        <button class="btn btn-info" onclick="location.href='/login'">登陆</button>
+                        <button class="btn btn-success" onclick="location.href='/register'">注册</button>
+                    </div>
+                </div>
+            </div>
+
+            <%}%>
+        </div>
+    </div>
+    <%- include("footer") %>
+</body>
+
+</html>

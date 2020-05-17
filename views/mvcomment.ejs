@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>电影评论</title>
+    <%- include common %>
+</head>
+
+<body>
+
+    <%-  include("header",{title:"mvcomment"})  %>
+    <div class="container">
+        <!-- 标题 -->
+        <div class="row">
+            <h3 class="text-primary" style="padding-left: 15px;">电影评论</h3>
+        </div>
+
+        <!-- 评论内容 -->
+        <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-8">
+                <% if(result.length){ %>
+                <% result.forEach((item,index)=>{ %>
+                <h5 class="text-info">用户<%- item.username %> : <a
+                        href="/details/aboutcomment?mtitle=<%- item.mtitle %>">《<%- item.mtitle %>》</a>
+                    <p class="pull-right"><%- item.time %></p>
+                </h5>
+                <div class="thumbnail">
+                    <div class="pull-right">
+                        <!-- username 是前端传过来的登陆的username -->
+                        <% if(item.username == username){ %>
+                        <button data-toggle="modal" data-target="#delbox" onclick="setId('<%- item._id %>')"
+                            class="btn btn-danger">删除</button>
+                        <button data-item='<%- JSON.stringify(item) %>' onclick="getItem(this)" data-toggle="modal"
+                            data-target="#updatebox" class="btn btn-primary">修改</button>
+                        <% }else{ %>
+                        <!-- <button class="btn btn-default">无权限</button>
+                        <button class="btn btn-default">无权限</button> -->
+                        <% } %>
+
+                    </div>
+                    <h5 class="text-primary">标题：<%- item.title %> </h5>
+                    <h6 class="text-danger">内容：<%- item.content %></h6>
+                </div>
+                <% }) %>
+                <% }else{ %>
+                <p class="text-danger">暂时没有评论</p>
+                <% } %>
+
+                <nav aria-label="Page navigation">
+                    <ul class="pagination">
+                        <li class="<%- pageNow-1<1?'disabled':'' %>">
+                            <a href="/details/mvcomment?pageNow=<%- pageNow-1 %>" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                        <li class="<%- pageNow-2<1?'disabled':'' %>">
+                            <a href="/details/mvcomment?pageNow=<%- pageNow-2 %>">
+                                <%- pageNow-2 %>
+                            </a>
+                        </li>
+                        <li class="<%- pageNow-1<1?'disabled':'' %>">
+                            <a href="/details/mvcomment?pageNow=<%- pageNow-1 %>">
+                                <%- pageNow-1 %>
+                            </a>
+                        </li>
+                        <li class="active"><a href="/details/mvcomment?pageNow=<%- pageNow %>"><%- pageNow %></a></li>
+                        <li class="<%- pageNow+1>pageTotal?'disabled':'' %>">
+                            <a href="/details/mvcomment?pageNow=<%- pageNow+1 %>">
+                                <%- pageNow+1 %>
+                            </a>
+                        </li>
+                        <li class="<%- pageNow+2>pageTotal?'disabled':'' %>">
+                            <a href="/details/mvcomment?pageNow=<%- pageNow+2 %>">
+                                <%- pageNow+2 %>
+                            </a>
+                        </li>
+                        <li class="<%- pageNow+1>pageTotal?'disabled':'' %>">
+                            <a href="/details/mvcomment?pageNow=<%- pageNow+1 %>" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                        <li class="disabled">
+                            <a href="#">第<%- pageNow %>页 / 共 <%- pageTotal %> 页</a>
+                        </li>
+                    </ul>
+                </nav>
+
+
+            </div>
+            <div class="col-md-2">
+                <!-- <button class="btn btn-danger">删除</button>
+                <button class="btn btn-primary">修改</button> -->
+            </div>
+        </div>
+
+        <!-- 分页 -->
+
+
+    </div>
+
+
+    <!-- 删除的模态框 -->
+    <div class="modal fade" tabindex="-1" role="dialog" id="delbox">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">删除警告</h4>
+                </div>
+                <div class="modal-body">
+                    <p>确定要删除吗&hellip;</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary" onclick="deleteCommentById()">确定</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+
+    <!-- 修改的模态框 -->
+    <div class="modal fade" tabindex="-1" role="dialog" id="updatebox">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">修改评论</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="titleInput">评论标题</label>
+                        <input type="text" class="form-control" id="titleInput" placeholder="评论标题">
+                    </div>
+                    <div class="form-group">
+                        <label for="contentInput">评论内容</label>
+                        <textarea placeholder="评论内容" class="form-control" id="contentInput" cols="20"
+                            rows="10"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary" onclick="updateComment()">修改</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+
+
+
+
+
+</body>
+<script>
+    //点击删除按钮的时候 获取id ---  通过传id然后去数据库匹配数据进行删除
+    var id = null;
+
+    function setId(itemid) {
+        id = itemid;
+        // console.log(id);  //控制台打印成功  数据库数据的默认id
+    }
+
+    //点击弹框的确定的时候 传id给后端 然后后端进行数据库删除数据
+    function deleteCommentById() {
+        console.log(id);
+        $.ajax({
+            url: "/details/delete",
+            type: 'get',
+            data: {
+                deleteid: id
+            },
+            success(res) {
+                console.log(res);
+
+                $('#delbox').modal("hide"); //确定后删除隐藏模态框 --- bootstrap 写法
+                window.location.reload(); // 重新加载 
+            }
+        })
+    }
+
+
+    //1.获取item的数据把原始信息显示在要修改的文本框里面  item是一个数组，所以要自定义一个自定义属性来给他转为字符串
+    //然后取到属性里面的字符串，转为对象进行显示
+    var obj = {};
+
+    function getItem(_this) {
+        obj = JSON.parse($(_this).attr("data-item")); //获取自定义属性里面的字符串改为数组
+
+        // 然后把title 和 content 给到要修改内容的文本框内显示
+        $("#titleInput").val(obj.title);
+        $("#contentInput").val(obj.content);
+    }
+
+
+    //2.把要修改的内容拿到数据库去修改
+    function updateComment() {
+        $.ajax({
+            url: "/details/update",
+            type: "post",
+            data: {
+                title: $("#titleInput").val(),
+                content: $("#contentInput").val(),
+                id: obj.id, //通过自增长id去数据库寻找进行修改  obj里面放的是当前点击这条数据信息 --- item，item里面有这条数据所有的信息
+            },
+            success(res) {
+                console.log(res);
+
+                $("#updatebox").modal("hide");
+                window.location.reload();
+            }
+        })
+    }
+</script>
+
+</html>

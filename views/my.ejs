@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>个人中心</title>
+    <%- include common %>
+</head>
+
+<body>
+    <%- include("header",{title:"my"}) %>
+    <div class="container-fluid">
+        <div class="col-md-4">
+            <form>
+                <h2 class="text-info">个人中心 </h2>
+                <div class="form-group">
+                    <label for="usernameInput">用户名</label>
+                    <input disabled name="username" value="<%- result.username %>" type="text" class="form-control"
+                        id="usernameInput" placeholder="请输入用户名">
+                </div>
+                <div class="form-group">
+                    <label for="passwardInput">密码</label>
+                    <input name="passward" value="<%- result.passward %>" type="text" class="form-control"
+                        id="passwardInput" placeholder="请输入密码">
+                </div>
+                <div class="form-group">
+                    <label for="emailInput">邮箱</label>
+                    <input name="email" value="<%- result.email %>" type="email" class="form-control" id="emailInput"
+                        placeholder="请输入邮箱">
+                </div>
+            </form>
+            <button type="button" class="btn btn-primary" onclick="changemsg()">修改个人信息</button>
+            <button class="btn btn-danger" onclick="location.href='/resetuser'">重置用户名</button>
+        </div>
+    </div>
+</body>
+<script>
+
+    function changemsg() {
+        $.ajax({
+            url: '/users/changeinfo',
+            type: 'post',
+            data: {
+                username: $('#usernameInput').val(),
+                password: $('#passwardInput').val(),
+                email: $('#emailInput').val()
+            },
+            success(res) {
+                console.log(res);
+                if (res.code == 200) {
+                    location.href = "/login"  //刷新页面
+                } else {
+                    alert("修改信息失败")
+                }
+            }
+        })
+    }
+
+</script>
+
+</html>

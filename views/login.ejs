@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>登陆</title>
+    <%- include common %>
+</head>
+
+<body>
+    <%-  include("header",{title:"login"})  %>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3 col-lg-3 col-sm-3">
+                <h3 class="text-info">用户登录</h3>
+                <form action="/users/login" method="post">
+                    <div class="form-group">
+                        <label for="usernameInput">用户名</label>
+                        <input name="username" value="<%- username %>" type="text" class="form-control"
+                            id="usernameInput" placeholder="请输入用户名">
+                    </div>
+                    <div class="form-group">
+                        <label for="passwordInput">密码</label>
+                        <input name="password" type="password" class="form-control" id="passwordInput"
+                            placeholder="请输入密码">
+                    </div>
+                    <button type="submit" class="btn btn-success">登录</button>
+                    <button type="button" onclick="location.href='/register'" class="btn btn-info">注册</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <%- include footer %>
+</body>
+
+</html>

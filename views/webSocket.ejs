@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>聊天室</title>
+
+    <%- include common %>
+</head>
+<style>
+    #chatroom {
+        width: 400px;
+        height: 300px;
+        border: 1px solid gray;
+        margin-bottom: 20px;
+        overflow: auto;
+    }
+
+    h3 {
+        padding: 10px 0;
+    }
+
+    .sendroom {
+        width: 400px;
+        position: relative;
+    }
+
+    textarea {
+        width: 400px;
+        height: 100px;
+        resize: none;
+    }
+
+    /* button {
+        position: absolute;
+        right: 0;
+        bottom: 5px;
+    } */
+</style>
+
+<body>
+    <%-  include("header",{title:"chatroom"})  %>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-8">
+                <h3 class="text-info">电影聊天室</h3>
+                <div id="chatroom">
+                    <!-- 显示聊天信息 -->
+                </div>
+
+                <div class="sendroom">
+                    <textarea type="text" placeholder="请输入..." id="content"></textarea>
+                    <button class="btn btn-success" id="sendbtn">发送</button>
+                </div>
+            </div>
+            <div class="col-md-2"></div>
+        </div>
+
+    </div>
+    <%- include footer %>
+</body>
+
+<script>
+    //客户端的代码
+
+    //1.创建客户端socket
+    const ws = new WebSocket("ws://localhost:3333"); //WebSocket h5特性
+
+    //2.连接服务器的 socket
+    ws.onopen = function () {
+        ws.send("客户端连接服务器的socket成功了")
+    }
+
+    //3.发送消息给服务器
+    function sendMsg() {
+        //id具有唯一性
+        ws.send(content.value);
+        content.value = "";
+    }
+
+    //??????????
+    sendbtn.onclick = sendMsg   //把函数体赋值给点击按钮  不加()就是不执行函数
+
+    //绑定键盘事件
+    document.onkeydown = function (ev) {
+        if (ev.keyCode == 13) {
+            sendMsg()
+        }
+    }
+
+    //4.接受服务器传来的消息
+    ws.onmessage = function (data) {
+        console.log(data);
+        document.getElementById("chatroom").innerHTML += `<p>${data.data}</p>`
+
+    }
+
+    // 5. 监听 服务器 关闭 或者 异常 
+    ws.onclose = function () {
+        console.log("服务器已经关闭")
+    }
+    ws.onerror = function (err) {
+        console.log("服务器出现异常 " + err)
+    }
+
+
+</script>
+
+</html>

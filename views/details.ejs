@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>电影评论</title>
+    <%- include common%>
+</head>
+
+<body>
+    <%-  include("header",{title:"mvcomment"})  %>
+    <div class="container-fluid container">
+        <div class="row">
+            <div class="col-md-6">
+                <h2 class="text-success text-center">电影详情</h2>
+                <div class="thumbnail">
+                    <img src="<%- result.images.medium.replace(/img7/,'img3') %>" style="height:420px;width:100%"
+                        alt="">
+                    <div class="caption">
+                        <h4 class="text-primary pull-right"> <%- result.year%> </h4>
+                        <h4 class="text-danger"> <%- result.title %> </h4>
+                        <p class="text-success"> 评分: <%- result.rating.average %></p>
+                        <p class="text-info"> 导演: <%- result.directors[0].name %></p>
+                        <p class="text-warning"> 分类: <%- result.genres %></p>
+                        <p class="text-warning"> 演员: <%- result.casts[0].name %></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <h2 class="text-primary text-center">添加评论</h2>
+                <form action="/details/content?mid=<%- result.id %>" method="POST">
+                    <div class="form-group">
+                        <label for="titleInput">评论标题</label>
+                        <input name="title" type="text" class="form-control" id="titleInput" placeholder="评论标题">
+                    </div>
+                    <div class="form-group">
+                        <label for="contentInput">评论内容</label>
+                        <textarea name="content" placeholder="评论内容" class="form-control" id="contentInput" cols="30"
+                            rows="10"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">提交评论</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <%- include footer %>
+</body>
+
+</html>

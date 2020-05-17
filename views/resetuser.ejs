@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>个人中心</title>
+    <%- include common %>
+</head>
+
+<body>
+    <%- include("header",{title:"resetuser"})   %>
+    <div class="container-fluid">
+        <div class="col-md-4">
+            <form>
+                <h2 class="text-info">个人中心 </h2>
+                <div class="form-group">
+                    <label for="oldpasswardInput">请输入旧的用户名</label>
+                    <input name="oldusername" type="text" class="form-control" id="oldpasswardInput"
+                        placeholder="请输入旧的用户名">
+                </div>
+                <div class="form-group">
+                    <label for="newpasswardInput">请输入新的用户名</label>
+                    <input name="newusername" type="text" class="form-control" id="newpasswardInput"
+                        placeholder="请输入新的用户名">
+                </div>
+                <button type="button" class="btn btn-primary" onclick="changeuser()">确定</button>
+            </form>
+
+        </div>
+    </div>
+</body>
+<script>
+    function changeuser() {
+        $.ajax({
+            url: '/users/changeuser',
+            type: 'post',
+            data: {
+                oldusername: $('#oldpasswardInput').val(),
+                newusername: $('#newpasswardInput').val(),
+            },
+            success(res) {
+                console.log(res);
+                alert(res.msg);
+                !!res.type && (window.location.href = "/login");
+            }
+        })
+    }
+</script>
